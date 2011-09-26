@@ -1,0 +1,15 @@
+PATH
+  remote: .
+  specs:
+    hash_to_object (0.1.0)
+
+GEM
+  specs:
+    rspec (1.2.9)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  hash_to_object!
+  rspec

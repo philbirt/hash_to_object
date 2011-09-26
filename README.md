@@ -13,7 +13,7 @@ HashToObject is a mixin for converting hashes into ruby objects.  For instance, 
 
 And you have a hash like such:
  
-   hash_to_object = {:amount => 25, :type => "credit", :admin => false}
+    hash_to_object = {:amount => 25, :type => "credit", :admin => false}
 
 Then you can call `Order.new(hash_to_object)` and get an `Order` object with instance variables `@amount`, `@type`, `@admin`.
 
