@@ -41,7 +41,9 @@ Gem::Specification.new do |s|
   ## THE MANIFEST COMMENTS, they are used as delimiters by the task.
   # = MANIFEST =
   s.files = %w[
-    README
+    Gemfile
+    Gemfile.lock
+    README.md
     Rakefile
     hash_to_object.gemspec
     lib/hash_to_object.rb
