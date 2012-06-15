@@ -1,9 +1,9 @@
 HashToObject
 ============
 
-HashToObject is a mixin for converting hashes into ruby objects.  For instance, if you wanted an Order class that could be instantiated from a hash, you could define it as such:
+HashToObject is a mixin for converting hashes into ruby objects.  For instance, if you wanted to build Foo objects, you could define it as such:
 
-    class Order
+    class Foo
       include HashToObject
 
       def initialize(options = {})
@@ -11,20 +11,52 @@ HashToObject is a mixin for converting hashes into ruby objects.  For instance, 
       end
     end
 
-And you have a hash like such:
- 
-    hash_to_object = {:amount => 25, :type => "credit", :admin => false}
+You can now build new Foo objects with arbitrary key value pairs and have access to them.
+    
+    foo = Foo.new('bar' => 'baz', 'qux' => [1,2,3])
+    
+    foo.bar
+    => "baz"
+    foo.bar = "garply"
+    => "garply"
+    
+    quux = Foo.new('corge' => 'grault')
+    
+    quux.bar
+    => NoMethodError: undefined method 'bar'
+    quux.corge
+    => "grault"
 
-Then you can call `Order.new(hash_to_object)` and get an `Order` object with instance variables `@amount`, `@type`, `@admin`.
 
-Nesting
-=======
-HashToObject also supports nesting of object creation.  It defines the nested objects' class based on the name of the parent class and the singularized key name of the nested value.
+Recursion and Nesting
+=====================
+HashToObject also supports nesting of object creation.  Note that you will need classes that correspond to the hash structure.
 
-Example:
+    class Foo::Item
+      include HashToObject
 
-    Order.new({:item => {:name => "foo"}, :transactions => [{:id => "bar"},{:id => "baz"}])
+      def initialize(options = {})
+        objectify(options)
+      end
+    end
+    
+    class Foo::Lolipop
+      include HashToObject
 
-This would create an object of type `Order`, with instance variables `@item` and `@transactions` linking to objects of type `Order::Item` (with instance variable `@name`), and `Order::Transaction` (with instance variable `@id`).  
+      def initialize(options = {})
+        objectify(options)
+      end
 
-The only caveat is that you need to have `Order::Item` and `Order::Transaction` defined, and mix-in HashToObject similarly to `Order` above.
+      def waldo
+        "Where in the world is #{@id}?"
+      end
+    end
+
+    foo = Foo.new('item' => {'name' => 'foo'}, 'lolipops' => [{'id'=> 'bar'}, {'id'=> 'baz'}])
+
+    foo.item
+    => #<Foo::Item:0x007fbf40ee1e78 @name="foo">
+    foo.lolipops
+    => [#<Foo::Lolipop:0x007fbf429d4780 @id="bar">, #<Foo::Lolipop:0x007fbf42bc1a48 @id="baz">]
+    foo.lolipops.first.waldo
+    => "Where in the world is bar?"

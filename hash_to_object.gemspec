@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = '1.3.5'
 
   s.name     = 'hash_to_object'
-  s.version  = '0.1.0'
+  s.version  = '0.1.1'
   s.date     = '2011-09-26'
   s.summary  = "Converts hashes into ruby objects."
   s.authors  = ["Phillip Birtcher"]
